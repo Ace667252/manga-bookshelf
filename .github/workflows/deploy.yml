@@ -17,6 +17,7 @@ jobs:
           node-version: 18
 
       - run: npm install
+      - working-directory: ./manga-bookshelf
       - run: npm run build
 
       - name: Publish Website
