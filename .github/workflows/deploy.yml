@@ -11,19 +11,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout your code
       - uses: actions/checkout@v3
 
-      - name: Install Node
+      # 2️⃣ Install Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 20
 
-      - run: npm install
-      - working-directory: ./manga-bookshelf
-      - run: npm run build
+      # 3️⃣ Install dependencies (in manga-bookshelf folder)
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./manga-bookshelf
 
-      - name: Publish Website
-        uses: peaceiris/actions-gh-pages@v3
+      # 4️⃣ Build the Vite project
+      - name: Build project
+        run: npm run build
+        working-directory: ./manga-bookshelf
+
+      # 5️⃣ Deploy the built site to GitHub Pages
+      - name: Deploy Website
+        uses: peaceiris/actions-gh-pages@v6
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./manga-bookshelf/dist
