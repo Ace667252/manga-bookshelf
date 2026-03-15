@@ -9,28 +9,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Forces all GitHub Actions JS code to run on Node 24
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      # 1️⃣ Checkout the repo
+      # 1️⃣ Checkout repo
       - uses: actions/checkout@v3
 
-      # 2️⃣ Setup Node.js
+      # 2️⃣ Setup Node for your project build
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 20  # your project uses Node 20
 
-      # 3️⃣ Install dependencies in the correct folder
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm install
         working-directory: ./manga-bookshelf
 
-      # 4️⃣ Build the Vite app
+      # 4️⃣ Build the Vite/React app
       - name: Build project
         run: npm run build
         working-directory: ./manga-bookshelf
 
-      # 5️⃣ Deploy build output
+      # 5️⃣ Deploy to GitHub Pages
       - name: Deploy Website
         uses: peaceiris/actions-gh-pages@v4
         with:
