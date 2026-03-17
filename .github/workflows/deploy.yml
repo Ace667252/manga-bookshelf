@@ -1,41 +1,33 @@
-name: Deploy Website
-permissions:
-  contents: write
+name: Deploy Manga Shelf
 
 on:
   push:
     branches: ["main"]
 
+permissions:
+  contents: write
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    env:
-      # Forces GitHub Actions to run JS actions on Node 24
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
-      # 1️⃣ Checkout your code
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # 2️⃣ Setup Node.js for your project
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 20  # your project build uses Node 20
+          node-version: 24
 
-      # 3️⃣ Install dependencies inside manga-bookshelf
       - name: Install dependencies
         run: npm install
-        working-directory: ./manga-bookshelf
 
-      # 4️⃣ Build the Vite app
       - name: Build project
         run: npm run build
-        working-directory: ./manga-bookshelf
 
-      # 5️⃣ Deploy build output to GitHub Pages
-      - name: Deploy Website
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./manga-bookshelf/dist
+          publish_dir: ./dist
